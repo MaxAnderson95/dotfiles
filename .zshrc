@@ -48,8 +48,8 @@ alias cat=bat
 alias vi=nvim
 alias tf=tofu
 
-source /usr/local/share/fzf/completion.zsh
-source /usr/local/share/fzf/key-bindings.zsh
+source ~/.config/fzf/completion.zsh
+source ~/.config/fzf/key-bindings.zsh
 source <(pkgx --shellcode)
 source <(kubectl completion zsh)
 eval "$(starship init zsh)"
