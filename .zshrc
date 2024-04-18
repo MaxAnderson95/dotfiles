@@ -38,7 +38,7 @@ export PYTHONDONTWRITEBYTECODE=1
 export K9S_CONFIG_DIR=~/.config/k9s
 export KUBE_EDITOR=nvim
 
-alias ls="ls -lh --color"
+alias ls="ls -lah --color"
 alias k=kubectl
 alias kc=kubecm
 alias klogout='kubectl config unset current-context > /dev/null'
