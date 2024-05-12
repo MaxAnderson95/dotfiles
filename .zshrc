@@ -51,11 +51,7 @@ export PROD_SUBSCRIPTION=93927568-fb85-4c03-9732-201f9a021d83
 export LAB_SUBSCRIPTION=0b2584a6-d4ed-4459-8e12-01275f7cc843
 export MAX_SUBSCRIPTION=ebfe4853-7922-40bf-a01e-6d3a1565dd23
 
-<<<<<<< HEAD
-alias ls="ls -lah --color"
-=======
 alias ls="eza --all --color=always --long --git --icons=always --no-user --no-filesize --no-time --no-permissions"
->>>>>>> d88dc07 (Updated .zshrc)
 alias k=kubectl
 alias kc=kubecm
 alias s=switch
