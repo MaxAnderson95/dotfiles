@@ -63,7 +63,7 @@ disabled = false
 [git_branch]
 symbol = "󰊢"
 format = "on [$symbol$branch]($style) "
-truncation_length = 4
+truncation_length = 20
 truncation_symbol = "…/"
 style = "bold green"
 
@@ -86,6 +86,10 @@ deleted = " "
 min_time = 500
 format = " [$duration](bold yellow) "
 
+[docker_context]
+disabled = true
+
 [character]
 success_symbol = "[>](fg:5)"
 error_symbol = "[✗](fg:124)"
+
