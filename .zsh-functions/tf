@@ -1,0 +1,69 @@
+function taint_all_resources() {
+    # Ensure Terraform is initialized and ready
+    if ! terraform validate >/dev/null 2>&1; then
+        echo "Terraform validate failed. Ensure your Terraform configuration is valid."
+        return 1
+    fi
+
+    # Get all resources from the Terraform state
+    local resources=("${(@f)$(terraform state list)}")
+
+    if [ -z "$resources" ]; then
+        echo "No resources found in the Terraform state."
+        return 1
+    fi
+
+    # Loop through each resource and taint it
+    for resource in $resources; do
+        if [[ $resource == data.* ]]; then
+          echo "Skipping data resource: $resource"
+          continue
+        fi
+
+        echo "Tainting resource: $resource"
+        terraform taint "$resource"
+        if [ $? -ne 0 ]; then
+            echo "Failed to taint resource: $resource"
+            # Decide how to handle failure: stop, or continue with the next resource
+            # To stop the loop on failure, uncomment the next line
+            return 1
+        fi
+    done
+
+    echo "All resources have been tainted."
+}
+
+function untaint_all_resources() {
+    # Ensure Terraform is initialized and ready
+    if ! terraform validate >/dev/null 2>&1; then
+        echo "Terraform validate failed. Ensure your Terraform configuration is valid."
+        return 1
+    fi
+
+    # Get all resources from the Terraform state
+    local resources=("${(@f)$(terraform state list)}")
+
+    if [ -z "$resources" ]; then
+        echo "No resources found in the Terraform state."
+        return 1
+    fi
+
+    # Loop through each resource and untaint it
+    for resource in $resources; do
+        if [[ $resource == data.* ]]; then
+          echo "Skipping data resource: $resource"
+          continue
+        fi
+
+        echo "Untainting resource: $resource"
+        terraform untaint $resource
+        if [ $? -ne 0 ]; then
+            echo "Failed to untaint resource: $resource"
+            # Decide how to handle failure: stop, or continue with the next resource
+            # To stop the loop on failure, uncomment the next line
+            return 1
+        fi
+    done
+
+    echo "All resources have been untainted."
+}

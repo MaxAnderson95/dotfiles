@@ -1,0 +1,26 @@
+shell-integration = zsh
+
+cursor-style = block
+cursor-style-blink = true
+copy-on-select = true
+
+#theme = chester
+#theme = blulocoDark
+theme = Argonaut
+background-opacity = 0.95
+background-blur-radius = 20
+window-padding-y = 10,0
+window-padding-x = 10
+
+font-family = CaskaydiaCove Nerd Font Mono
+font-family-bold = CaskaydiaCove Nerd Font Mono
+font-family-italic = CaskaydiaCove Nerd Font Mono
+font-family-bold-italic = CaskaydiaCove Nerd Font Mono
+font-size = 20
+
+macos-option-as-alt = true
+keybind = global:alt+grave_accent=toggle_visibility
+keybind = cmd+right=text:\x05
+keybind = cmd+left=text:\x01
+keybind = alt+right=esc:f
+keybind = alt+left=esc:b
