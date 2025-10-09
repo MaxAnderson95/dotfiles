@@ -168,6 +168,7 @@ alias klogout='kubectl config unset current-context > /dev/null; unset KUBECONFI
 alias clip=pbcopy
 alias ccat=/bin/cat
 alias cat=bat
+alias xxd=hexyl
 alias vi=nvim
 alias f=yazi
 alias ..="cd .."
@@ -187,8 +188,19 @@ source <(kubectl completion zsh)
 source <(jwt completion bash)
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
+# Lazy load thefuck - only initialize on first use
+fuck() {
+  unset -f fuck fk
+  eval $(thefuck --alias)
+  eval $(thefuck --alias fk)
+  fuck "$@"
+}
+fk() {
+  unset -f fuck fk
+  eval $(thefuck --alias)
+  eval $(thefuck --alias fk)
+  fk "$@"
+}
 #eval "$(/Users/max/Projects/starship/target/debug/starship init zsh)"
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
@@ -203,9 +215,32 @@ source <(switch completion zsh)
 source <(helm completion zsh)
 source $HOME/.tenv.completion.zsh
 
+# Lazy load nvm - only load when needed
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
+node() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  node "$@"
+}
+npm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  npm "$@"
+}
+npx() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  npx "$@"
+}
 
 function code() {
   # Define the workspace storage path.
@@ -278,8 +313,25 @@ function yolo() {
   claude --dangerously-skip-permissions "$@"
 }
 
+function how() {
+  emulate -L zsh
+  setopt NO_GLOB
+  local query="$*"
+  local prompt="You are a command line expert. The user wants to run a command but they don't know how. They are running zsh on macOS. Here is what they asked: ${query}. Return ONLY the exact shell command needed. Do not prepend with an explanation, no markdown, no code blocks - just return the raw command you think will solve their query."
+  local model="gpt-4o-mini"
+  local cmd
+  cmd=$(llm -m $model --no-stream "$prompt" | tr -d '\000-\037' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+  print -z -- "$cmd"
+}
+# Ensure globbing is disabled when invoking `d`
+alias how='noglob how'
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh --disable-up-arrow)"
