@@ -26,6 +26,7 @@ export TENV_AUTO_INSTALL=true
 export GREP_OPTIONS='--color=auto'
 export NVM_DIR="$HOME/.nvm"
 export BUN_INSTALL="$HOME/.bun"
+export ARM_SUBSCRIPTION_ID=$PROD_SUBSCRIPTION
 
 # ============================================================================
 # PATH Configuration
@@ -60,6 +61,7 @@ alias temp="cd $(mktemp -d)"
 alias home=cd ~
 alias copysshkey=getsshkey
 alias how='noglob how'
+alias rg='rg -uu'
 
 # Java version management
 alias java-21="export JAVA_HOME=`/usr/libexec/java_home -v 21`"
@@ -283,6 +285,7 @@ source <(alias s=switch)
 source <(switch completion zsh)
 source <(helm completion zsh)
 source $HOME/.tenv.completion.zsh
+source <(stern --completion=zsh)
 [ -s "/Users/max/.bun/_bun" ] && source "/Users/max/.bun/_bun"
 
 # Google Cloud SDK
