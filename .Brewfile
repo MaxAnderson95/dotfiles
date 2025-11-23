@@ -185,6 +185,7 @@ cask "ngrok"
 cask "spotify-notify"
 # Network protocol analyzer
 cask "wireshark-app"
+cask "headlamp"
 vscode "adpyke.codesnap"
 vscode "albert.tabout"
 vscode "anthropic.claude-code"

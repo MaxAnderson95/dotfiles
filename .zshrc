@@ -27,6 +27,8 @@ export GREP_OPTIONS='--color=auto'
 export NVM_DIR="$HOME/.nvm"
 export BUN_INSTALL="$HOME/.bun"
 export ARM_SUBSCRIPTION_ID=$PROD_SUBSCRIPTION
+export TRY_PATH="$HOME/Projects/tries"
+export DOCKER_HOST=unix://$HOME/.local/share/containers/podman/machine/podman.sock
 
 # ============================================================================
 # PATH Configuration
@@ -76,6 +78,11 @@ function vizsh() {
   source ~/.zshrc
 }
 
+function vizshprivate() {
+  nvim ~/.zshrc_private
+  source ~/.zshrc
+}
+
 function getsshkey() {
   cat ~/.ssh/id_rsa.pub | pbcopy
   echo "Copied SSH public key to clipboard."
@@ -121,9 +128,33 @@ function how() {
   local query="$*"
   local prompt="You are a command line expert. The user wants to run a command but they don't know how. They are running zsh on macOS. Here is what they asked: how ${query}. Return ONLY the exact shell command needed. Do not prepend with an explanation, no markdown, no code blocks - just return the raw command you think will solve their query."
   local model="gpt-4o-mini"
+  #local model="gpt-5.1"
   local cmd
   cmd=$(llm -m $model --no-stream "$prompt" | tr -d '\000-\037' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
   print -z -- "$cmd"
+}
+
+function kind() {
+  # Save current KUBECONFIG if set
+  local _old_kubeconfig=""
+  if [[ -n "${KUBECONFIG:-}" ]]; then
+    _old_kubeconfig="$KUBECONFIG"
+  fi
+
+  # Clear current kubectl context and KUBECONFIG
+  kubectl config unset current-context > /dev/null 2>&1
+  unset KUBECONFIG
+
+  # Run the real kind command with all original args
+  command kind "$@"
+  local kind_status=$?
+
+  # Restore KUBECONFIG only if it was previously set
+  if [[ -n "$_old_kubeconfig" ]]; then
+    export KUBECONFIG="$_old_kubeconfig"
+  fi
+
+  return $kind_status
 }
 
 # ============================================================================
@@ -303,3 +334,8 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # ============================================================================
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh --disable-up-arrow)"
+eval "$(ruby ~/.local/try.rb init)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
