@@ -334,7 +334,8 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # ============================================================================
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh --disable-up-arrow)"
-eval "$(ruby ~/.local/try.rb init)"
+#eval "$(ruby ~/.local/try.rb init)"
+eval "$(try init $TRY_PATH)"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"

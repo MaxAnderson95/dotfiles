@@ -6,13 +6,15 @@ copy-on-select = true
 
 macos-icon = blueprint
 
-theme = TokyoNight
+theme = Snazzy
 background-opacity = 1
 background-blur-radius = 20
 window-padding-y = 10,0
 window-padding-x = 10
 
-font-family = JetBrains Mono Light
+font-family = Berkeley Mono
+adjust-cell-height = 2
+adjust-cell-width = -1
 font-size = 20
 
 macos-option-as-alt = true
@@ -24,3 +26,7 @@ keybind = alt+left=esc:b
 keybind = shift+enter=text:\x0a
 
 link-url = true
+
+#custom-shader = ~/.config/ghostty/shaders/tft.glsl
+#custom-shader = ~/.config/ghostty/shaders/bettercrt.glsl
+#custom-shader = ~/.config/ghostty/shaders/glitchy.glsl
