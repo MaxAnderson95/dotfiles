@@ -28,11 +28,15 @@ keybind = shift+enter=text:\x0a
 link-url = true
 
 # tmux-style keybindings (Ctrl+b prefix)
-# Pane/split navigation (vim-style)
+# Pane/split navigation (vim-style and arrow keys)
 keybind = ctrl+b>h=goto_split:left
 keybind = ctrl+b>j=goto_split:bottom
 keybind = ctrl+b>k=goto_split:top
 keybind = ctrl+b>l=goto_split:right
+keybind = ctrl+b>left=goto_split:left
+keybind = ctrl+b>down=goto_split:bottom
+keybind = ctrl+b>up=goto_split:top
+keybind = ctrl+b>right=goto_split:right
 
 # Split creation
 keybind = ctrl+b>shift+five=new_split:right
