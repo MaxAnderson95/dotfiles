@@ -7,18 +7,27 @@ tap "mike-engel/jwt-cli"
 tap "nahive/spotify-notify"
 tap "norwoodj/tap"
 tap "powershell/tap"
+tap "steipete/tap"
 tap "teamookla/speedtest"
 tap "ynqa/tap"
 # GitOps Continuous Delivery for Kubernetes
 brew "argocd"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Azure Storage data transfer utility
+brew "azcopy"
 # Microsoft Azure CLI 2.0
 brew "azure-cli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Memory upgrade for your coding agent
+brew "beads"
 # Testing and linting Helm charts
 brew "chart-testing"
 # CLI to install, manage & troubleshoot Kubernetes clusters running Cilium
 brew "cilium-cli"
+# Statistics utility to count lines of code
+brew "cloc"
 # Cloud provider for KIND clusters
 brew "cloud-provider-kind"
 # Command-line tool to manage cert-manager
@@ -35,7 +44,7 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# Play, record, convert, and stream audio and video
+# Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
 # Command-line fuzzy finder written in Go
 brew "fzf"
@@ -45,16 +54,14 @@ brew "gh"
 brew "git-delta"
 # Render markdown on the CLI
 brew "glow"
-# GNU Pretty Good Privacy (PGP) package
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
-# Open source programming language to build simple/reliable/efficient software
-brew "go"
 # Command-line Golang template processor
 brew "gomplate"
 # Library access to GnuPG
 brew "gpgme"
 # Kubernetes package manager
-brew "helm"
+brew "helm@3"
 # Deploy Kubernetes Helm Charts
 brew "helmfile"
 # Command-line hex viewer
@@ -67,7 +74,7 @@ brew "hugo"
 brew "jq"
 # Interactive jq
 brew "ijq"
-# Tools and libraries to manipulate images in many formats
+# Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Update of iperf: measures TCP, UDP, and SCTP bandwidth
 brew "iperf3"
@@ -105,10 +112,18 @@ brew "openbao"
 brew "operator-sdk"
 # OCI Registry As Storage
 brew "oras"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Fast, disk space efficient package manager
+brew "pnpm"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
+# Command-line shell and scripting language
+brew "powershell"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
 # Interpreted, interactive, object-oriented programming language
@@ -149,6 +164,8 @@ brew "tmux"
 brew "trivy"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
+# CLI for Git worktree management, designed for parallel AI agent workflows
+brew "worktrunk"
 # Linter for YAML files
 brew "yamllint"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -171,29 +188,39 @@ brew "derailed/k9s/k9s"
 brew "mike-engel/jwt-cli/jwt-cli"
 # Automatically generate markdown documentation for helm charts
 brew "norwoodj/tap/helm-docs"
-# Formula to install PowerShell
-brew "powershell/tap/powershell"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
+# Compact TeX distribution as alternative to the full TeX Live / MacTeX
+cask "basictex"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
+# Menu bar usage monitor for Codex and Claude
+cask "steipete/tap/codexbar"
+# Brings the power of Copilot coding agent directly to your terminal
+cask "copilot-cli"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
+# UI for Kubernetes
+cask "headlamp"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
 # macOS notifications for Spotify
-cask "spotify-notify"
+cask "nahive/spotify-notify/spotify-notify"
 # Network protocol analyzer
 cask "wireshark-app"
-cask "headlamp"
 vscode "adpyke.codesnap"
 vscode "albert.tabout"
 vscode "anthropic.claude-code"
+vscode "astral-sh.ty"
+vscode "astro-build.astro-vscode"
 vscode "bierner.markdown-mermaid"
 vscode "bradlc.vscode-tailwindcss"
 vscode "buenon.scratchpads"
 vscode "catppuccin.catppuccin-vsc"
 vscode "catppuccin.catppuccin-vsc-icons"
+vscode "cedricverlinden.cursor-dark"
 vscode "charliermarsh.ruff"
 vscode "chrmarti.network-proxy-test"
 vscode "davidanson.vscode-markdownlint"
@@ -204,19 +231,19 @@ vscode "editorconfig.editorconfig"
 vscode "enkia.tokyo-night"
 vscode "esbenp.prettier-vscode"
 vscode "foxundermoon.shell-format"
-vscode "gamunu.opentofu"
-vscode "github.copilot"
 vscode "github.copilot-chat"
 vscode "github.github-vscode-theme"
 vscode "github.vscode-github-actions"
 vscode "golang.go"
 vscode "grafana.vscode-jsonnet"
 vscode "gruntfuggly.todo-tree"
+vscode "hanskre.markdown-execute"
 vscode "hashicorp.hcl"
 vscode "jflbr.jwt-decoder"
 vscode "johnpapa.vscode-peacock"
 vscode "lihui.vs-color-picker"
 vscode "linhmtran168.mac-ca-vscode"
+vscode "local.cursor-dark-fixed"
 vscode "mechatroner.rainbow-csv"
 vscode "meshintelligenttechnologiesinc.pieces-vscode"
 vscode "mindaro-dev.file-downloader"
@@ -228,6 +255,7 @@ vscode "ms-azuretools.vscode-azureresourcegroups"
 vscode "ms-azuretools.vscode-containers"
 vscode "ms-dotnettools.csdevkit"
 vscode "ms-dotnettools.csharp"
+vscode "ms-dotnettools.vscode-dotnet-modernize"
 vscode "ms-dotnettools.vscode-dotnet-runtime"
 vscode "ms-kubernetes-tools.vscode-kubernetes-tools"
 vscode "ms-mssql.data-workspace-vscode"
@@ -265,12 +293,10 @@ vscode "ritwickdey.liveserver"
 vscode "rogalmic.bash-debug"
 vscode "rust-lang.rust-analyzer"
 vscode "shd101wyy.markdown-preview-enhanced"
-vscode "sst-dev.opencode"
+vscode "sst-dev.opencode-v2"
 vscode "tal7aouy.icons"
 vscode "tamasfe.even-better-toml"
 vscode "taneron.10xdev-theme"
-vscode "visualstudioexptteam.intellicode-api-usage-examples"
-vscode "visualstudioexptteam.vscodeintellicode"
 vscode "vscjava.migrate-java-to-azure"
 vscode "vscjava.vscode-gradle"
 vscode "vscjava.vscode-java-debug"
@@ -281,8 +307,8 @@ vscode "vscjava.vscode-java-upgrade"
 vscode "vscjava.vscode-maven"
 vscode "xcad2k.vscode-thedigitallife"
 vscode "xrc-inc.jsonnet-formatter"
+vscode "yzane.markdown-pdf"
 vscode "zhuangtongfa.material-theme"
 vscode "zunix.edgerouter-conf"
-vscode "zxh404.vscode-proto3"
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
