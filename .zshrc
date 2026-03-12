@@ -21,14 +21,17 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 export TENV_DETACHED_PROXY=false
 export PYTHONDONTWRITEBYTECODE=1
 export K9S_CONFIG_DIR=~/.config/k9s
-export KUBE_EDITOR=nvim
+export EDITOR="code --wait"
+export KUBE_EDITOR="code --wait"
 export TENV_AUTO_INSTALL=true
 export GREP_OPTIONS='--color=auto'
 export NVM_DIR="$HOME/.nvm"
 export BUN_INSTALL="$HOME/.bun"
 export ARM_SUBSCRIPTION_ID=$PROD_SUBSCRIPTION
 export TRY_PATH="$HOME/Projects/tries"
-export DOCKER_HOST=unix://$HOME/.local/share/containers/podman/machine/podman.sock
+#export DOCKER_HOST=unix://$HOME/.local/share/containers/podman/machine/podman.sock
+export HOMEBREW_NO_ENV_HINTS=1
+export PAGER="less -RFX"
 
 # ============================================================================
 # PATH Configuration
@@ -46,7 +49,7 @@ alias ls='eza --long --all --time-style relative --group-directories-first --git
 alias k=kubectl
 alias kc=kubecm --config /Users/max/.kube/config
 alias d=docker
-alias docker=podman
+#alias docker=podman
 alias s=switch
 alias klogout='kubectl config unset current-context > /dev/null; unset KUBECONFIG'
 alias clip=pbcopy
@@ -64,11 +67,7 @@ alias home=cd ~
 alias copysshkey=getsshkey
 alias how='noglob how'
 alias rg='rg -uu'
-
-# Java version management
-alias java-21="export JAVA_HOME=`/usr/libexec/java_home -v 21`"
-alias java-11="export JAVA_HOME=`/usr/libexec/java_home -v 11`"
-java-11
+alias md=glow
 
 # ============================================================================
 # Functions - Utility
@@ -81,6 +80,11 @@ function vizsh() {
 function vizshprivate() {
   nvim ~/.zshrc_private
   source ~/.zshrc
+}
+
+function vighostty() {
+  ghostty +edit-config
+  pkill -USR1 ghostty
 }
 
 function getsshkey() {
@@ -120,6 +124,69 @@ function code() {
 
 function yolo() {
   claude --dangerously-skip-permissions "$@"
+}
+
+function oc() {
+  OPENCODE_EXPERIMENTAL_PLAN_MODE=1 opencode "$@"
+}
+
+function nextver() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: nextver <module-name>"
+    echo "Example: nextver terraform-argocd-install"
+    echo "Example: nextver charts/gucu-microservice"
+    return 1
+  fi
+
+  local module="$1"
+  local module_escaped="${module//\//\\/}"
+
+  # Get tags, filter by module, exclude pre-release versions, sort by semver, get latest
+  local latest=$(git tag -l "${module}/v*" 2>/dev/null | \
+    grep -E "^${module_escaped}/v[0-9]+\.[0-9]+\.[0-9]+$" | \
+    sed "s|${module}/v||" | \
+    sort -t. -k1,1n -k2,2n -k3,3n | \
+    tail -1)
+
+  if [[ -z "$latest" ]]; then
+    echo "No stable versions found for: $module"
+    echo ""
+    echo "Available tags matching '${module}':"
+    git tag -l "${module}/v*" | head -10
+    return 1
+  fi
+
+  # Parse version components
+  local major minor patch
+  major=$(echo "$latest" | cut -d. -f1)
+  minor=$(echo "$latest" | cut -d. -f2)
+  patch=$(echo "$latest" | cut -d. -f3)
+
+  # Calculate next versions
+  local next_patch="${major}.${minor}.$((patch + 1))"
+  local next_minor="${major}.$((minor + 1)).0"
+  local next_major="$((major + 1)).0.0"
+
+  echo ""
+  echo "$module"
+  echo ""
+  echo "Most recent version: ${module}/v${latest}"
+  echo ""
+  echo "Next patch version:  ${module}/v${next_patch}"
+  echo "Next minor version:  ${module}/v${next_minor}"
+  echo "Next major version:  ${module}/v${next_major}"
+  echo ""
+}
+
+function rr() {
+  klogout
+  cd ~
+  clear
+}
+
+function gsmp() {
+  git switch main
+  git pull
 }
 
 function how() {
@@ -253,6 +320,12 @@ function tf_cleanup() {
     fi
 }
 
+function tf-taint-all() {
+  terraform state list | while read -r resource; do
+    terraform taint "$resource"
+  done
+}
+
 # ============================================================================
 # Functions - Kubernetes
 # ============================================================================
@@ -278,28 +351,34 @@ eval "$(zoxide init --cmd cd zsh)"
 # Lazy Loading - NVM
 # ============================================================================
 nvm() {
-  unset -f nvm node npm npx
+  unset -f nvm node npm npx pnpm
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
   nvm "$@"
 }
 node() {
-  unset -f nvm node npm npx
+  unset -f nvm node npm npx pnpm
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
   node "$@"
 }
 npm() {
-  unset -f nvm node npm npx
+  unset -f nvm node npm npx pnpm
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
   npm "$@"
 }
 npx() {
-  unset -f nvm node npm npx
+  unset -f nvm node npm npx pnpm
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
   npx "$@"
+}
+pnpm() {
+  unset -f nvm node npm npx pnpm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  command pnpm "$@"
 }
 
 # ============================================================================
@@ -317,6 +396,8 @@ source <(switch completion zsh)
 source <(helm completion zsh)
 source $HOME/.tenv.completion.zsh
 source <(stern --completion=zsh)
+source <(glow completion zsh)
+compdef md=glow
 [ -s "/Users/max/.bun/_bun" ] && source "/Users/max/.bun/_bun"
 
 # Google Cloud SDK
@@ -340,3 +421,5 @@ eval "$(try init $TRY_PATH)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

@@ -76,10 +76,10 @@ untracked = " "
 ahead = "⇡${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 behind = "⇣${count}"
-stashed = " "
+stashed = "  "
 modified = "[ ](fg:124)"
 staged = '[++\($count\)](green)'
-renamed = "襁 "
+renamed = "󰑕 "
 deleted = " "
 
 [cmd_duration]
